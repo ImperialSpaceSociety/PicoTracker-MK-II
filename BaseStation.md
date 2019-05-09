@@ -15,7 +15,7 @@ It will be used to receive and transmit telemetry with high altitude balloons.
 
 ## Applications
 * To track balloons launched by the Imperial College Space Society, especially during launches from London
-* To track radiosondes launched by the Meterological service and add to a central database, [sondehub.org](tracker.sondehub.org/)
+* To track radiosondes launched by the Meterological service and add to a central database, [tracker.sondehub.org/]
 
 ## Frequencies and Modes
 

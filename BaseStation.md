@@ -1,4 +1,4 @@
-# Ideas for Imperial College HAB Base Station
+# Ideas for Imperial College HAB Ground Station
 
 
 

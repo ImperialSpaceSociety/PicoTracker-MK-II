@@ -21,7 +21,7 @@ struct io_descriptor *RFM98W_io;
 #include "RFM98W.h"
 
 /* set up the SPI Port and associated GPIO */
-void RFM98W_Init(void)
+void RFM98W_Setup(void)
 {
 	/* Configure Reset */
 	gpio_set_pin_direction(RFM98W_RESET_PIN, GPIO_DIRECTION_OUT);
@@ -54,21 +54,26 @@ void RFM98W_Init(void)
 	spi_m_sync_enable(&SPI_0);
 }
 
-/* Assert or clear SPI Chip Select 
- * 1 = select, 0 = de-select */
 
-void Set_RFM98W_CS(uint8_t value)
+void Set_RFM98W_CS(void)
 {
-	gpio_set_pin_level(RFM98W_CS_PIN, !value);
+	gpio_set_pin_level(RFM98W_CS_PIN, false);
 }
 
-/* Hold SPI Chip Reset 
- * 1 = Reset, 0 = not Reset */
+void Clear_RFM98W_CS(void)
+{
+	gpio_set_pin_level(RFM98W_CS_PIN, true);
+}
+
+
+/* SPI Chip Reset 
+ *  */
 void reset_RFM98W(void)
 {
 	gpio_set_pin_level(RFM98W_RESET_PIN, false);
 	delay_ms(1);
 	gpio_set_pin_level(RFM98W_RESET_PIN, true);
+	delay_ms(10);
 }
 
 /* Write to an RFM98W register */
@@ -80,11 +85,11 @@ void write_RFM98W_Register(uint8_t reg, uint8_t val)
 	data[0]= reg | 0x80;
 	data[1] = val;
 
-	Set_RFM98W_CS(true);
+	Set_RFM98W_CS();
 	
 	io_write(RFM98W_io, data, 2);
 	
-	Set_RFM98W_CS(false);
+	Clear_RFM98W_CS();
 }
 
 /* Read from an RFM98W Register */
@@ -95,12 +100,12 @@ uint8_t read_RFM98W_Register(uint8_t reg)
 	uint8_t	data = reg & 0x7F;
 	uint8_t val;
 
-	Set_RFM98W_CS(true);
+	Set_RFM98W_CS();
 
 	io_write(RFM98W_io, &data, 1);
 	io_read(RFM98W_io, &val, 1);
 
-	Set_RFM98W_CS(false);
+	Clear_RFM98W_CS();
 
 	return val;
 }
@@ -111,24 +116,24 @@ uint8_t read_RFM98W_Register(uint8_t reg)
 void write_RFM98W_FIFO(uint8_t* data, uint8_t length)
 {
 	uint8_t reg = REG_FIFO | 0x80;
-	Set_RFM98W_CS(true);
+	Set_RFM98W_CS();
 	
 	io_write(RFM98W_io, &reg, 1);
 	io_write(RFM98W_io, data, length);
 	
-	Set_RFM98W_CS(false);
+	Clear_RFM98W_CS();
 }
 
 /* Read from RFM98W FIFO*/
 void read_RFM98W_FIFO(uint8_t *data, uint8_t length)
 {
 	uint8_t reg = REG_FIFO;
-	Set_RFM98W_CS(true);
+	Set_RFM98W_CS();
 	
 	io_write(RFM98W_io, &reg, 1);
 	io_read(RFM98W_io, data, length);
 	
-	Set_RFM98W_CS(false);
+	Clear_RFM98W_CS();
 }
 
 

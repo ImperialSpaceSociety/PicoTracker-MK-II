@@ -39,7 +39,7 @@
  *
  * \acme_license_stop
  *
- * Project: RFM95W
+ * Project: RFM98W
  * Target:  ATSAML21J18B 
  *
  **/

@@ -10,7 +10,7 @@
 
 /* Pinouts for prototype board on Atsamdl21 xplained */
 
-#define RFM98W_CS_PIN		PA17
+#define RFM98W_CS_PIN		PB17
 #define RFM98W_RESET_PIN	PB00
 #define RFM98W_DIO0_PIN		PB01
 #define RFM98W_DIO1_PIN		PB30
@@ -61,6 +61,7 @@ enum dio {DIO0, DIO1, DIO2, DIO3, DIO4, DIO5};
 #define REG_PACKET_CONFIG1	  		0x30
 #define REG_PAYLOAD_LENGTH_FSK      0x32
 #define REG_FIFO_THRESH             0x35
+#define REG_VERSION					0x42
 
 // MODES
 #define RF98_MODE_RX_CONTINUOUS     0x85
@@ -122,8 +123,9 @@ enum dio {DIO0, DIO1, DIO2, DIO3, DIO4, DIO5};
 
 /* Function Prototypes */
 
-void RFM98W_Init(void);
-void Set_RFM98W_CS(uint8_t);
+void RFM98W_Setup(void);
+void Set_RFM98W_CS(void);
+void Clear_RFM98W_CS(void);
 void reset_RFM98W(void);
 void write_RFM98W_Register(uint8_t, uint8_t);
 uint8_t read_RFM98W_Register(uint8_t );

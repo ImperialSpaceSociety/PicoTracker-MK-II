@@ -5,7 +5,7 @@
 int main(void)
 {
 	
-	uint8_t msg[20] = "RFM98W Sending";
+	uint8_t msg[50] = "$$$$RFM98W Sending Lots of data from Ricky\r\n";
 	
 	/* Initializes MCU, drivers and middleware */
 	atmel_start_init();
@@ -22,18 +22,21 @@ int main(void)
 	
 	
 	
-	SendLoRaRTTY(msg, 20);
+	SendLoRaRTTY(msg, sizeof(msg));
 	printf("\r\n Send FSK Message\r\n");
 	
-	printf("\r\n Send Lora Message\r\n");
-	//SendLoRaData(msg, 20);
+	
 	
 	while (1) {
 	CheckFSKBuffers();	
-	delay_ms(5);
-	//SendLoRaData(msg, 20);	
-	//SendLoRaRTTY(msg, 20);
-	//printf("\r\n Send Lora Message Again\r\n");
+	delay_us(100);
+	
+	if(FSKPacketSent())
+	{
+		delay_ms(2000);
+		SendLoRaRTTY(msg, sizeof(msg));
+	}
+	
 	}
 	
 }

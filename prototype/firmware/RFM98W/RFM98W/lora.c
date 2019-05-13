@@ -254,9 +254,7 @@ void AddBytesToFSKBuffer(int MaxBytes)
 
 	if (RadioConfig.RTTYIndex < RadioConfig.RTTYLength)
 	{
-		data[BytesWritten++] = REG_FIFO | 0x80;
-		
-		
+				
 		while((BytesWritten <= (MaxBytes - RadioConfig.FSKOverSample + 1)) &&
 			  (RadioConfig.RTTYIndex < RadioConfig.RTTYLength))
 		{
@@ -342,6 +340,7 @@ void SendLoRaRTTY(unsigned char *buffer, int Length)
 
 void ConfigRTTYFSK(void)
 {
+	
 	
 	RadioConfig.RTTYShift = 450;
 	RadioConfig.RTTYPreamble = 8;

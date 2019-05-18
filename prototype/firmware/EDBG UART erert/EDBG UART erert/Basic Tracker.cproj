@@ -749,6 +749,12 @@
     <Compile Include="hri\hri_wdt_l21.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="lora.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lora.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
@@ -762,6 +768,12 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RFM98W.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="RFM98W.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="string.c">

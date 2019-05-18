@@ -41,7 +41,7 @@
 #include "fix.h"
 #include "gps.h"
 #include "BME280.h"
-#include "driver_examples.h"
+#include "lora.h"
 
 
 volatile static uint32_t data_from_GPS_arrived = 0;
@@ -74,6 +74,8 @@ int i;
 int T, P, H; // calibrated values
 float fP, fH;
 
+uint8_t msg[50] = "$$$$RFM98W Sending Lots of data from Ricky\r\n";
+
 
 /*
 
@@ -102,7 +104,7 @@ void get_fix(void) {
      */
 	
 	current_fix.num_svs = 0; 
-	current_fix.type = 0;
+	current_fix.type = 3;
 
 	while (1) {
 		
@@ -175,8 +177,16 @@ int main(void)
 	
 	while(!(gps_power_save(1)));
 	while(!(gps_save_settings()));
-
-	
+					
+	if(lora_init() == 1){
+		
+		}
+	else {
+		
+		};	
+		
+	SendLoRaRTTY(msg, sizeof(msg));
+		
 
 	// main loop
 	while (1) {
@@ -189,7 +199,7 @@ int main(void)
 		while(!(gps_power_save(0)));
 	
 		/* get the gps fix */
-		get_fix();
+		//get_fix();
 	
 		/* put the gps back to power save mode(sleep) */
 		while(!(gps_power_save(1)));
@@ -203,12 +213,18 @@ int main(void)
 		/* 10 start pips */
 		//telemetry_start(TELEMETRY_PIPS, 10);
 		
+		CheckFSKBuffers();
+		//delay_us(100);
+			
+		if(FSKPacketSent())
+		{
+			delay_ms(1000);
+			SendLoRaRTTY(msg, sizeof(msg));
+		}
+			
+		
 		delay_ms(1000);
 	
 	}
 	
 }
-
-
-
-

@@ -215,6 +215,8 @@ int main(void)
 		
 		CheckFSKBuffers();
 		//delay_us(100);
+		
+		// shift: 365Hz, 7 bit ASCII, no parity, 2 stop bits
 			
 		if(FSKPacketSent())
 		{

@@ -44,14 +44,6 @@
 #include "lora.h"
 
 
-
-volatile static uint32_t data_from_GPS_arrived = 0;
-volatile static uint32_t data_from_MCU_arrived = 0;
-
-uint8_t recv_char_from_GPS;
-uint8_t recv_char_from_MCU;
-
-
 /*
 * the TX data buffer
 * contains ASCII data, which is either transmitted as CW over RTTY
@@ -68,16 +60,13 @@ extern uint16_t tlm_alt_length;
 
 
 
-
-/* for the temperature, humdity, pressure sensor */
+/* for the temperature, humidity, pressure sensor */
 int i;
 uint16_t T, P, H; // calibrated values
 float fP, fH;
 
-
-uint8_t msg[50] = "$$$$RFM98W Sending Lots of data from Ricky\r\n";
-uint8_t pip[1] = "a";
-
+/* The pip tone */ 
+uint8_t pip[1] = {0}; // Try to use the center frequency instead of the mark or space.
 
 
 /*
@@ -99,15 +88,13 @@ uint8_t pip[1] = "a";
 /* current (latest) GPS fix and measurements */
 struct gps_fix current_fix;
 
-
 void send_pips(int n){
     int i;
     for(i = 0; i < n; i++){
-		SendLoRaRTTY(pip, sizeof(pip));
+		SendLoRaRTTY(pip, 1);
 		delay_ms(500);
 	}
 }
-	
 	
 
 void get_fix(void) {
@@ -125,7 +112,7 @@ void get_fix(void) {
 		/* check if we have a fix*/		
 		gps_get_fix(&current_fix);
 		
-		// TODO: use the GPS status bit to check if it works
+		// TODO: use the GPS status bit to check if the fix is valid
 		//current_fix.type = 3; // TEMP
 
 		/* check if we have a 3D fix */
@@ -139,7 +126,6 @@ void get_fix(void) {
 	}   
 
 }
-
 
 
 void get_measurements(void){
@@ -222,6 +208,8 @@ int main(void)
 		{
 			transmit_sequence();
 			/* sleep */
+			// Make it sleep here
+			// TODO clean this area up.
 			
 		}else{
 			

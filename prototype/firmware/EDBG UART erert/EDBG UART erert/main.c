@@ -44,14 +44,12 @@
 #include "lora.h"
 
 
+
 volatile static uint32_t data_from_GPS_arrived = 0;
 volatile static uint32_t data_from_MCU_arrived = 0;
 
 uint8_t recv_char_from_GPS;
 uint8_t recv_char_from_MCU;
-
-
-
 
 
 /*
@@ -69,12 +67,17 @@ extern uint16_t tlm_sent_id_length;
 extern uint16_t tlm_alt_length;
 
 
+
+
 /* for the temperature, humdity, pressure sensor */
 int i;
-int T, P, H; // calibrated values
+uint16_t T, P, H; // calibrated values
 float fP, fH;
 
+
 uint8_t msg[50] = "$$$$RFM98W Sending Lots of data from Ricky\r\n";
+uint8_t pip[1] = "a";
+
 
 
 /*
@@ -96,6 +99,17 @@ uint8_t msg[50] = "$$$$RFM98W Sending Lots of data from Ricky\r\n";
 /* current (latest) GPS fix and measurements */
 struct gps_fix current_fix;
 
+
+void send_pips(int n){
+    int i;
+    for(i = 0; i < n; i++){
+		SendLoRaRTTY(pip, sizeof(pip));
+		delay_ms(500);
+	}
+}
+	
+	
+
 void get_fix(void) {
     ubx_poll_fail = 0;
 	
@@ -110,19 +124,18 @@ void get_fix(void) {
 		
 		/* check if we have a fix*/		
 		gps_get_fix(&current_fix);
+		
+		// TODO: use the GPS status bit to check if it works
+		//current_fix.type = 3; // TEMP
 
 		/* check if we have a 3D fix */
 		if (current_fix.type == 3){
 			break;
 		};
-		
-		delay_ms(500);
-		
-		/* Pip because we don't have a fix yet*/
-		//telemetry_start(TELEMETRY_PIPS, 1);
-		
-		/* Sleep Wait */ 
-		//while (telemetry_active());
+				
+		/* send pip */
+		send_pips(4);
+
 	}   
 
 }
@@ -137,96 +150,82 @@ void get_measurements(void){
 	
 	current_fix.temp_BME280 = T;
     current_fix.op_status = ((ubx_cfg_fail & 0x03) << 2) | ((ubx_poll_fail & 0x03)); //send operational status
-    //current_fix.voltage_radio =  si_trx_get_voltage();
+}
+
+void transmit_sequence(){
+	/* now wake up the GPS */
+	gps_wake_up();
+		
+	/* now put the gps in full power mode */
+	while(!(gps_power_save(0)));
+	
+	/* get the gps fix */
+	get_fix();
+	
+	/* put the gps back to power save mode(sleep) */
+	while(!(gps_power_save(1)));
+	
+	/* get voltage  and temperature*/
+	get_measurements(); 
+	
+	/* create the telemetry string */
+	prepare_tx_buffer();
+		
+	/* send out the data */
+	tx_buf_length  = TX_BUF_FRAME_END;
+	SendLoRaRTTY(tx_buf, tx_buf_length);	
 }
 
 int main(void)
 {
-
 	
 	/* Initializes MCU, drivers and middleware */
 	atmel_start_init();
 	usart_sync_enable(&USART_0);	
-	usart_sync_enable(&EDBG_COM_1);
-
-
+	
+	lora_init();
 
 	/* Initialise BME280 */
 	while(BME280Init(0x76));
 	delay_ms(100); // wait for data to settle for first read
 
-	
 	/* Initialise GPS */   
 	gps_wake_up();
 	
 	// TODO: add to the op byte
-    while(!(gps_cfg_reset()));
+    //while(!(gps_cfg_reset()));
 	while(!(gps_disable_nmea_output()));
 	while(!(gps_set_power_save()));
 	while(!(gps_set_gps_only()));
 	while(!(gps_set_airborne_model()));
           
-		  
-
  	/* Get a single GPS fix from a cold start. Does not carry on until it has a
 	 * solid fix
 	*/
-	//get_fix();
+	get_fix();
 	get_measurements();
 
-	
 	while(!(gps_power_save(1)));
 	while(!(gps_save_settings()));
 					
-	if(lora_init() == 1){
+	SendLoRaRTTY(tx_buf, tx_buf_length);
 		
-		}
-	else {
-		
-		};	
-		
-	SendLoRaRTTY(msg, sizeof(msg));
-		
-
-	// main loop
+	/* MAIN */
 	while (1) {
-		//bridge_gps_to_com_port();	
-
-		/* now wake up the GPS */
-		gps_wake_up();
-	
-		/* now put the gps in full power mode */
-		while(!(gps_power_save(0)));
-	
-		/* get the gps fix */
-		//get_fix();
-	
-		/* put the gps back to power save mode(sleep) */
-		while(!(gps_power_save(1)));
-	
-		/* get voltage  and temperature*/
-		get_measurements(); 
-	
-		/* create the telemetry string */
-		prepare_tx_buffer();
-	
-		/* 10 start pips */
-		//telemetry_start(TELEMETRY_PIPS, 10);
+		
+		// shift: 365Hz, 7 bit ASCII, no parity, 2 stop bits, 434.000Mhz
 		
 		CheckFSKBuffers();
-		//delay_us(100);
+		delay_us(100);
 		
-		// shift: 365Hz, 7 bit ASCII, no parity, 2 stop bits
-			
 		if(FSKPacketSent())
 		{
-			delay_ms(1000);
-			SendLoRaRTTY(msg, sizeof(msg));
-		}
+			transmit_sequence();
+			/* sleep */
 			
-		
-		delay_ms(1000);
-	
-	}
-	
+		}else{
+			
+		}
+
+	} /* MAIN */
 }

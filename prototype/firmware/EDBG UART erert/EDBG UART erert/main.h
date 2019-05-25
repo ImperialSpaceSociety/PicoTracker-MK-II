@@ -9,7 +9,7 @@
 #define MAIN_H_
 
 /* payload name */
-#define PAYLOAD_NAME "ICSPACE7"
+#define PAYLOAD_NAME "ICSPACE12"
 /* payload telemetry interval
  * can be set for APRS only and for RTTY + APRS
  */
@@ -41,7 +41,7 @@
 #define ALT_LENGTH_MAX		5
 #define VOLT_LENGTH		4
 #define OP_STAT_LENGTH		4
-#define TEMP_LENGTH		2
+#define TEMP_LENGTH		4
 #define CHECKSUM_LENGTH		4
 /* sentence id is variable length */
 #define SENT_ID_LENGTH_MAX	5

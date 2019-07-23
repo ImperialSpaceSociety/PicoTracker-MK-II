@@ -8,24 +8,16 @@
 
 #include "RFM98W.h"
 
-#define FREQUENCY	434000000;
-#define POWER		0x88;
-#define RTTY_BAUDRATE	50;
+#define FREQUENCY	144600000
+#define POWER		0x88
+#define RTTY_BAUDRATE	1200
+#define RTTY_SHIFT		976 // this is quantised in 122Hz steps
 
 
-typedef enum {lmIdle, lmListening, lmSending} tLoRaMode;
+typedef enum {radioIdle, radioListening, radioSending} tRadioState;
 
-struct TBinaryPacket
-{
-	uint8_t 	PayloadIDs;
-	uint16_t	Counter;
-	uint16_t	Seconds;
-	float		Latitude;
-	float		Longitude;
-	uint16_t	Altitude;
-};
 
-struct TLoRaMode 
+struct TLoRaProfile 
 {
 	int	ImplicitOrExplicit;
 	int ErrorCoding;
@@ -44,11 +36,12 @@ struct TRadioConfig
 	
 
 	int		MillisSinceLastPacket;
-	int		LoraMode;
-	int		LoraOpMode;
+	tRadioState		radioState;
+	int		current_Profile;
 	
-	int		InRTTYMode;
-	int		SendingRTTY;
+	
+	int		InRTTYMode; // Are we in LoRa or RTTY FSK Mode ?
+	bool	RTTYSending;  // Busy sending RTTY
 	int		RTTYBaudRate;
 	int		RTTYShift;
 	int		RTTYIndex;
@@ -71,13 +64,14 @@ uint8_t  lora_init(void);
 void SwitchToLoRaMode(void);
 void SendLoRaData(unsigned char *buffer, int Length);
 void SwitchToFSKMode(void);
-int FSKPacketSent(void);
-int FSKBufferLow(void);
+bool FSKPacketSent(void);
+bool FSKBufferLow(void);
+bool ModeReady(void);
 void AddBytesToFSKBuffer(int MaxBytes);
 void SendLoRaRTTY(unsigned char *buffer, int Length);
 void ConfigRTTYFSK(void);
 void CheckFSKBuffers(void);
-int RadioState(void);
+bool RTTYSending(void);
 
 
 #endif // LORA_INCLUDED

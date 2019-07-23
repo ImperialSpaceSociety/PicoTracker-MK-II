@@ -1538,43 +1538,7 @@ I2C</text>
 <label x="99.06" y="109.22" size="1.778" layer="95" rot="MR0"/>
 </segment>
 </net>
-<net name="SCK" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="SCK"/>
-<wire x1="144.78" y1="99.06" x2="132.08" y2="99.06" width="0.1524" layer="91"/>
-<label x="132.08" y="99.06" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="JP1" gate="A" pin="18"/>
-<wire x1="78.74" y1="99.06" x2="66.04" y2="99.06" width="0.1524" layer="91"/>
-<label x="71.12" y="99.06" size="1.778" layer="95" rot="MR0"/>
-</segment>
-</net>
-<net name="MISO" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="MISO"/>
-<wire x1="144.78" y1="96.52" x2="132.08" y2="96.52" width="0.1524" layer="91"/>
-<label x="132.08" y="96.52" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="JP1" gate="A" pin="17"/>
-<wire x1="86.36" y1="99.06" x2="99.06" y2="99.06" width="0.1524" layer="91"/>
-<label x="99.06" y="99.06" size="1.778" layer="95" rot="MR0"/>
-</segment>
-</net>
-<net name="MOSI" class="0">
-<segment>
-<pinref part="U$1" gate="G$1" pin="MOSI"/>
-<wire x1="144.78" y1="93.98" x2="132.08" y2="93.98" width="0.1524" layer="91"/>
-<label x="132.08" y="93.98" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="JP1" gate="A" pin="16"/>
-<wire x1="78.74" y1="101.6" x2="66.04" y2="101.6" width="0.1524" layer="91"/>
-<label x="71.12" y="101.6" size="1.778" layer="95" rot="MR0"/>
-</segment>
-</net>
-<net name="NSS" class="0">
+<net name="PB17" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="NSS"/>
 <wire x1="144.78" y1="91.44" x2="132.08" y2="91.44" width="0.1524" layer="91"/>
@@ -1806,6 +1770,42 @@ I2C</text>
 <pinref part="JP2" gate="G$1" pin="1"/>
 <pinref part="U$1" gate="G$1" pin="ANT"/>
 <wire x1="180.34" y1="106.68" x2="175.26" y2="106.68" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="PB22" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="MOSI"/>
+<wire x1="144.78" y1="93.98" x2="132.08" y2="93.98" width="0.1524" layer="91"/>
+<label x="132.08" y="93.98" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP1" gate="A" pin="16"/>
+<wire x1="78.74" y1="101.6" x2="66.04" y2="101.6" width="0.1524" layer="91"/>
+<label x="71.12" y="101.6" size="1.778" layer="95" rot="MR0"/>
+</segment>
+</net>
+<net name="PB16" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="MISO"/>
+<wire x1="144.78" y1="96.52" x2="132.08" y2="96.52" width="0.1524" layer="91"/>
+<label x="132.08" y="96.52" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP1" gate="A" pin="17"/>
+<wire x1="86.36" y1="99.06" x2="99.06" y2="99.06" width="0.1524" layer="91"/>
+<label x="99.06" y="99.06" size="1.778" layer="95" rot="MR0"/>
+</segment>
+</net>
+<net name="PB23" class="0">
+<segment>
+<pinref part="U$1" gate="G$1" pin="SCK"/>
+<wire x1="144.78" y1="99.06" x2="132.08" y2="99.06" width="0.1524" layer="91"/>
+<label x="132.08" y="99.06" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="JP1" gate="A" pin="18"/>
+<wire x1="78.74" y1="99.06" x2="66.04" y2="99.06" width="0.1524" layer="91"/>
+<label x="71.12" y="99.06" size="1.778" layer="95" rot="MR0"/>
 </segment>
 </net>
 </nets>

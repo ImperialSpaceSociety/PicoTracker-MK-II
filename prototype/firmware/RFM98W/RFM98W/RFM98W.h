@@ -65,7 +65,8 @@ enum dio {DIO0, DIO1, DIO2, DIO3, DIO4, DIO5};
 
 // MODES
 #define RF98_MODE_RX_CONTINUOUS     0x85
-#define RF98_MODE_TX                0x83
+#define RF98_MODE_LORA_TX           0x83
+#define RF98_MODE_FSK_TX            0x0B
 #define RF98_MODE_SLEEP             0x80
 #define RF98_MODE_STANDBY           0x81
 

@@ -13,7 +13,7 @@
 uint8_t currentMode = 0x81;
 struct TRadioConfig		RadioConfig;
 
-struct TLoRaMode LoRaModes[] =
+struct TLoRaProfile LoRaProfiles[] =
 {
 	{EXPLICIT_MODE, ERROR_CODING_4_8, BANDWIDTH_20K8, SPREADING_11, 8,    60, "Telemetry"},			// 0: Normal mode for telemetry
 	{IMPLICIT_MODE, ERROR_CODING_4_5, BANDWIDTH_20K8, SPREADING_6,  0,  1400, "SSDV"},				// 1: Normal mode for SSDV
@@ -35,7 +35,7 @@ void SetLoraMode(uint8_t newMode)
 	
 	switch (newMode)
 	{
-		case RF98_MODE_TX:
+		case RF98_MODE_FSK_TX:
 		write_RFM98W_Register(REG_LNA, LNA_OFF_GAIN);  // TURN LNA OFF FOR TRANSMIT
 		write_RFM98W_Register(REG_PA_CONFIG, RadioConfig.Power);
 		write_RFM98W_Register(REG_OPMODE, newMode);
@@ -65,9 +65,9 @@ void SetLoraMode(uint8_t newMode)
 	if(newMode != RF98_MODE_SLEEP)
 	{
 		
-		//while(get_RFM98W_DIO(DIO5) == 0)
-		//{
-		//}
+		while(ModeReady() == false) ;// DIO5 has the mode_ready signal
+		
+		
 	}
 	else
 	{
@@ -137,15 +137,15 @@ uint8_t lora_init(void)
 	UpdateLoRaFrequency();
 
 	SetLoRaParameters(
-	LoRaModes[0].ImplicitOrExplicit,
-	LoRaModes[0].ErrorCoding,
-	LoRaModes[0].Bandwidth,
-	LoRaModes[0]. SpreadingFactor,
-	LoRaModes[0].LowDataRateOptimize);
+	LoRaProfiles[0].ImplicitOrExplicit,
+	LoRaProfiles[0].ErrorCoding,
+	LoRaProfiles[0].Bandwidth,
+	LoRaProfiles[0]. SpreadingFactor,
+	LoRaProfiles[0].LowDataRateOptimize);
 		
 	write_RFM98W_Register(REG_FIFO_ADDR_PTR, 0);
 
-	write_RFM98W_Register(REG_DIO_MAPPING_2,0x00);
+	write_RFM98W_Register(REG_DIO_MAPPING_2,0x00); // Mapping for DIO5 is 0
 		
 	return 1;
 }
@@ -155,11 +155,11 @@ void SwitchToLoRaMode(void)
 	UpdateLoRaFrequency();
 
 	SetLoRaParameters(
-	LoRaModes[RadioConfig.LoraMode].ImplicitOrExplicit,
-	LoRaModes[RadioConfig.LoraMode].ErrorCoding,
-	LoRaModes[RadioConfig.LoraMode].Bandwidth,
-	LoRaModes[RadioConfig.LoraMode]. SpreadingFactor,
-	LoRaModes[RadioConfig.LoraMode].LowDataRateOptimize);
+	LoRaProfiles[RadioConfig.current_Profile].ImplicitOrExplicit,
+	LoRaProfiles[RadioConfig.current_Profile].ErrorCoding,
+	LoRaProfiles[RadioConfig.current_Profile].Bandwidth,
+	LoRaProfiles[RadioConfig.current_Profile]. SpreadingFactor,
+	LoRaProfiles[RadioConfig.current_Profile].LowDataRateOptimize);
 	
 	
 }
@@ -192,10 +192,10 @@ void SendLoRaData(unsigned char *buffer, int Length)
 	write_RFM98W_Register(REG_PAYLOAD_LENGTH, Length);
 
 	// go into transmit mode
-	SetLoraMode(RF98_MODE_TX);
+	SetLoraMode(RF98_MODE_LORA_TX);
 	
-	RadioConfig.LoraOpMode = lmSending;
-	RadioConfig.SendingRTTY = 0;
+	RadioConfig.radioState = radioSending;
+	RadioConfig.RTTYSending = false;
 }
 
 void SwitchToFSKMode(void)
@@ -236,17 +236,36 @@ void SwitchToFSKMode(void)
 
 }
 
-int FSKPacketSent(void)
+bool FSKPacketSent(void)
 {
-	return ((read_RFM98W_Register(REG_IRQ_FLAGS2) & 0x48) != 0);
+	return ((read_RFM98W_Register(REG_IRQ_FLAGS2) & 0x08) != 0);
 }
 
-int FSKBufferLow(void)
+bool FSKBufferLow(void)
 {
 	return ((read_RFM98W_Register(REG_IRQ_FLAGS2) & 0x20) == 0);
 }
 
+bool ModeReady(void)
+{
+	return ((read_RFM98W_Register(REG_IRQ_FLAGS1) & 0x80) != 0);
+	
+}
+
+bool RTTYSending(void)
+{
+	return RadioConfig.RTTYSending;
+}
+
 void AddBytesToFSKBuffer(int MaxBytes)
+/* Send FSK RTTY Data using the FSK channel of the RFM98W
+
+ * The RFM98 bitrate is 800 bps for 50 baud and 2400 bps for 300 baud.
+ * The oversample is 2 for 50 baud and 1 for 300 baud
+ * So at 50 baud we send two full bytes of either 0x00 or 0xff for each data bit
+ * or at 300 baud we send a full byte of either 0x00 or 0xff for each data bit
+ */
+
 {
 	unsigned char data[64], temp;
 	
@@ -255,7 +274,7 @@ void AddBytesToFSKBuffer(int MaxBytes)
 	if (RadioConfig.RTTYIndex < RadioConfig.RTTYLength)
 	{
 				
-		while((BytesWritten <= (MaxBytes - RadioConfig.FSKOverSample + 1)) &&
+		while((BytesWritten <= (MaxBytes - RadioConfig.FSKOverSample)) &&
 			  (RadioConfig.RTTYIndex < RadioConfig.RTTYLength))
 		{
 			if (RadioConfig.RTTYMask < 0)  //start bit
@@ -304,7 +323,7 @@ void AddBytesToFSKBuffer(int MaxBytes)
 }
 
 
-void SendLoRaRTTY(unsigned char *buffer, int Length)
+void SendLoRaRTTY(unsigned char *buffer, int Length) // send up to 256 bytes of data
 {
 	
 
@@ -327,14 +346,14 @@ void SendLoRaRTTY(unsigned char *buffer, int Length)
 	uint8_t r = read_RFM98W_Register( REG_FIFO_THRESH);
 	write_RFM98W_Register(REG_FIFO_THRESH,(r&(~0x3F)) | 20);			// 20 = FIFO threshold
 	
-	write_RFM98W_Register(REG_OPMODE, 0x0B);		// Tx mode
+	write_RFM98W_Register(REG_OPMODE, RF98_MODE_FSK_TX);		// Tx mode
 
 	// Populate FIFO
 	AddBytesToFSKBuffer(64);
 	
 	// Set channel state
-	RadioConfig.LoraOpMode = lmSending;
-	RadioConfig.SendingRTTY = 1;
+	RadioConfig.radioState = radioSending;
+	RadioConfig.RTTYSending = true;
 }
 
 
@@ -342,18 +361,25 @@ void ConfigRTTYFSK(void)
 {
 	
 	
-	RadioConfig.RTTYShift = 450;
+	RadioConfig.RTTYShift = RTTY_SHIFT;
 	RadioConfig.RTTYPreamble = 8;
 	if (RadioConfig.RTTYBaudRate == 50)
 	{
 		RadioConfig.FSKBitRate = 40000;
 		RadioConfig.FSKOverSample = 2;
-		RadioConfig.RTTYBitLength = 7;
+		RadioConfig.RTTYBitLength = 8;
+	}
+	else if (RadioConfig.RTTYBaudRate == 1200)
+	{
+		RadioConfig.FSKBitRate = 3333
+		;
+		RadioConfig.FSKOverSample = 1;
+		RadioConfig.RTTYBitLength = 8;
 	}
 	else
 	{
 		// 300 baud
-		RadioConfig.FSKBitRate = 13333;	// 53333;
+		RadioConfig.FSKBitRate = 13333;
 		RadioConfig.FSKOverSample = 1;
 		RadioConfig.RTTYBitLength = 8;
 	}
@@ -368,14 +394,17 @@ void CheckFSKBuffers(void)
 {
 	
 	
-	if ((RadioConfig.LoraOpMode == lmSending) && RadioConfig.SendingRTTY)
+	if ((RadioConfig.radioState == radioSending) && RadioConfig.RTTYSending)
 	{
 		// Check if packet sent
 		if (FSKPacketSent())
 		{
 			
-			RadioConfig.LoraOpMode = lmIdle;
-			RadioConfig.SendingRTTY = 0;
+
+			RadioConfig.radioState = radioIdle;
+			RadioConfig.RTTYSending = false;
+			SetLoraMode(RF98_MODE_STANDBY);
+			//			SetLoraMode(RF98_MODE_SLEEP);
 		}
 		else if (FSKBufferLow())
 		{
@@ -385,7 +414,3 @@ void CheckFSKBuffers(void)
 	
 }
 
-int RadioState(void)
-{
-	return RadioConfig.LoraOpMode;
-}

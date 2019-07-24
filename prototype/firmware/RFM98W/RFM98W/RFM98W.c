@@ -50,6 +50,7 @@ void RFM98W_Setup(void)
 	gpio_set_pin_direction(RFM98W_DIO5_PIN, GPIO_DIRECTION_IN);
 	gpio_set_pin_pull_mode(RFM98W_DIO5_PIN,	GPIO_PULL_UP);
 
+	/* Configure SPI */
 	spi_m_sync_get_io_descriptor(&SPI_0, &RFM98W_io);
 	spi_m_sync_enable(&SPI_0);
 }

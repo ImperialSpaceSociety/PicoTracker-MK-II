@@ -499,128 +499,21 @@ Wire Wire Line
 $Comp
 L Memory_Flash:W25Q32JVSS U2
 U 1 1 5D352C6F
-P 1900 3250
-F 0 "U2" H 1900 3831 50  0000 C CNN
-F 1 "W25Q32JVSS" H 1900 3740 50  0000 C CNN
-F 2 "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm" H 1900 3250 50  0001 C CNN
-F 3 "http://www.winbond.com/resource-files/w25q32jv%20revg%2003272018%20plus.pdf" H 1900 3250 50  0001 C CNN
-	1    1900 3250
+P 9000 2000
+F 0 "U2" H 9000 2581 50  0000 C CNN
+F 1 "W25Q32JVSS" H 9000 2490 50  0000 C CNN
+F 2 "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm" H 9000 2000 50  0001 C CNN
+F 3 "http://www.winbond.com/resource-files/w25q32jv%20revg%2003272018%20plus.pdf" H 9000 2000 50  0001 C CNN
+	1    9000 2000
 	1    0    0    -1  
 $EndComp
-$Comp
-L Oscillator:Si5351B-B-GM U?
-U 1 1 5DE6AC8C
-P 9350 2150
-F 0 "U?" H 8950 1300 50  0000 C CNN
-F 1 "Si5351B-B-GM" H 9750 1300 50  0000 C CNN
-F 2 "Package_DFN_QFN:QFN-20-1EP_4x4mm_P0.5mm_EP2.7x2.7mm" H 9350 950 50  0001 C CNN
-F 3 "https://www.silabs.com/documents/public/data-sheets/Si5351-B.pdf" H 9350 2150 50  0001 C CNN
-	1    9350 2150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R?
-U 1 1 5DE6D904
-P 7550 2300
-F 0 "R?" H 7620 2346 50  0000 L CNN
-F 1 "10k" H 7620 2255 50  0000 L CNN
-F 2 "" V 7480 2300 50  0001 C CNN
-F 3 "~" H 7550 2300 50  0001 C CNN
-	1    7550 2300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7700 2050 7550 2050
-Wire Wire Line
-	7550 2050 7550 2150
-$Comp
-L power:GND #PWR?
-U 1 1 5DE7C231
-P 7550 2500
-F 0 "#PWR?" H 7550 2250 50  0001 C CNN
-F 1 "GND" H 7555 2327 50  0000 C CNN
-F 2 "" H 7550 2500 50  0001 C CNN
-F 3 "" H 7550 2500 50  0001 C CNN
-	1    7550 2500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7550 2500 7550 2450
-$Comp
-L power:GND #PWR?
-U 1 1 5DE7FD34
-P 7900 2300
-F 0 "#PWR?" H 7900 2050 50  0001 C CNN
-F 1 "GND" H 7905 2127 50  0000 C CNN
-F 2 "" H 7900 2300 50  0001 C CNN
-F 3 "" H 7900 2300 50  0001 C CNN
-	1    7900 2300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7900 2300 7900 2250
 Wire Wire Line
 	5950 1100 5950 2650
 $Comp
-L Amplifier_Operational:MCP601-xOT U?
-U 1 1 5DE929FA
-P 8000 1950
-F 0 "U?" H 8100 1800 50  0000 L CNN
-F 1 "MCP601-xOT" H 7950 1700 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23-5" H 7900 1750 50  0001 L CNN
-F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/21314g.pdf" H 8000 2150 50  0001 C CNN
-	1    8000 1950
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3.3V #PWR?
-U 1 1 5DE9DC27
-P 7900 1250
-F 0 "#PWR?" H 7900 1100 50  0001 C CNN
-F 1 "+3.3V" H 7915 1423 50  0000 C CNN
-F 2 "" H 7900 1250 50  0001 C CNN
-F 3 "" H 7900 1250 50  0001 C CNN
-	1    7900 1250
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+3.3V #PWR?
-U 1 1 5DE9E870
-P 9150 750
-F 0 "#PWR?" H 9150 600 50  0001 C CNN
-F 1 "+3.3V" H 9165 923 50  0000 C CNN
-F 2 "" H 9150 750 50  0001 C CNN
-F 3 "" H 9150 750 50  0001 C CNN
-	1    9150 750 
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+1V8 #PWR?
-U 1 1 5DE9F535
-P 9550 750
-F 0 "#PWR?" H 9550 600 50  0001 C CNN
-F 1 "+1V8" H 9565 923 50  0000 C CNN
-F 2 "" H 9550 750 50  0001 C CNN
-F 3 "" H 9550 750 50  0001 C CNN
-	1    9550 750 
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5DEA0BCE
-P 8650 3000
-F 0 "#PWR?" H 8650 2750 50  0001 C CNN
-F 1 "GND" H 8655 2827 50  0000 C CNN
-F 2 "" H 8650 3000 50  0001 C CNN
-F 3 "" H 8650 3000 50  0001 C CNN
-	1    8650 3000
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
+L power:GND #PWR050
 U 1 1 5DEA12DE
 P 9350 3200
-F 0 "#PWR?" H 9350 2950 50  0001 C CNN
+F 0 "#PWR050" H 9350 2950 50  0001 C CNN
 F 1 "GND" H 9355 3027 50  0000 C CNN
 F 2 "" H 9350 3200 50  0001 C CNN
 F 3 "" H 9350 3200 50  0001 C CNN
@@ -628,138 +521,7 @@ F 3 "" H 9350 3200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8750 2750 8650 2750
-Wire Wire Line
-	8650 2750 8650 2850
-Wire Wire Line
-	8750 2850 8650 2850
-Connection ~ 8650 2850
-Wire Wire Line
-	8650 2850 8650 3000
-Wire Wire Line
-	9350 3050 9350 3200
-Wire Wire Line
 	4750 3250 4050 3250
-Text Label 4100 3250 0    50   ~ 0
-DAC-SAM
-Wire Wire Line
-	9150 1250 9150 1100
-Wire Wire Line
-	9250 1250 9250 1100
-Wire Wire Line
-	9250 1100 9150 1100
-Connection ~ 9150 1100
-Wire Wire Line
-	9150 1100 9150 750 
-Wire Wire Line
-	9550 1250 9550 1100
-Wire Wire Line
-	9350 1250 9350 1100
-Wire Wire Line
-	9350 1100 9450 1100
-Connection ~ 9550 1100
-Wire Wire Line
-	9550 1100 9550 750 
-Wire Wire Line
-	9450 1250 9450 1100
-Connection ~ 9450 1100
-Wire Wire Line
-	9450 1100 9550 1100
-$Comp
-L Device:R R?
-U 1 1 5DED1E7E
-P 7550 1600
-F 0 "R?" H 7620 1646 50  0000 L CNN
-F 1 "10k" H 7620 1555 50  0000 L CNN
-F 2 "" V 7480 1600 50  0001 C CNN
-F 3 "~" H 7550 1600 50  0001 C CNN
-	1    7550 1600
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8300 1950 8350 1950
-Wire Wire Line
-	7550 1750 7550 2050
-Connection ~ 7550 2050
-Wire Wire Line
-	7550 1450 7550 1350
-Wire Wire Line
-	7550 1350 8350 1350
-Wire Wire Line
-	8350 1350 8350 1950
-Connection ~ 8350 1950
-Wire Wire Line
-	8350 1950 8750 1950
-Wire Wire Line
-	7900 1250 7900 1450
-$Comp
-L Device:C C?
-U 1 1 5DEEA959
-P 8150 1600
-F 0 "C?" H 8265 1646 50  0000 L CNN
-F 1 "100nf" H 8265 1555 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 8188 1450 50  0001 C CNN
-F 3 "~" H 8150 1600 50  0001 C CNN
-	1    8150 1600
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5DEEBA50
-P 8150 1750
-F 0 "#PWR?" H 8150 1500 50  0001 C CNN
-F 1 "GND" H 8155 1577 50  0000 C CNN
-F 2 "" H 8150 1750 50  0001 C CNN
-F 3 "" H 8150 1750 50  0001 C CNN
-	1    8150 1750
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8150 1450 7900 1450
-Connection ~ 7900 1450
-Wire Wire Line
-	7900 1450 7900 1650
-$Comp
-L Device:R R?
-U 1 1 5DEF3434
-P 7250 2300
-F 0 "R?" H 7320 2346 50  0000 L CNN
-F 1 "10k" H 7320 2255 50  0000 L CNN
-F 2 "" V 7180 2300 50  0001 C CNN
-F 3 "~" H 7250 2300 50  0001 C CNN
-	1    7250 2300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7250 2150 7250 1850
-Wire Wire Line
-	7250 1850 7700 1850
-Wire Wire Line
-	7250 2450 7250 2600
-Wire Wire Line
-	7250 2600 6800 2600
-Text Label 6850 2600 0    50   ~ 0
-DAC-SAM
-Wire Wire Line
-	8750 2350 8150 2350
-Wire Wire Line
-	8750 2450 8150 2450
-Wire Wire Line
-	8600 1450 8600 900 
-Wire Wire Line
-	8600 900  8000 900 
-Wire Wire Line
-	8600 1450 8750 1450
-Text Label 8100 900  0    50   ~ 0
-GPS-TCXO
-Wire Wire Line
-	9950 2650 10800 2650
-Text Label 10400 2650 0    50   ~ 0
-RF-CLK
-Wire Wire Line
-	9950 1850 10800 1850
-Text Label 10400 1850 0    50   ~ 0
-SAM-CLK
 Wire Wire Line
 	6750 3050 7600 3050
 Text Label 7200 3050 0    50   ~ 0

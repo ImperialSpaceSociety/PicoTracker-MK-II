@@ -796,7 +796,7 @@ U 1 1 5D6548E8
 P 2050 3450
 F 0 "X1" H 2100 3700 50  0000 L CNN
 F 1 "26.00MHz" H 2300 3600 50  0000 L CNN
-F 2 "Oscillator:Oscillator_SMD_SeikoEpson_SG210-4Pin_2.5x2.0mm" H 2725 3125 50  0001 C CNN
+F 2 "Oscillator:Oscillator_SMD_IQD_IQXO70-4Pin_7.5x5.0mm" H 2725 3125 50  0001 C CNN
 F 3 "http://www.iqdfrequencyproducts.com/products/details/iqxo-70-11-30.pdf" H 1950 3450 50  0001 C CNN
 	1    2050 3450
 	1    0    0    -1  
@@ -833,6 +833,8 @@ $Comp
 L ICSSPicoTracker:Johanson1575 ANT1
 U 1 1 5D521711
 P 1400 1500
+AR Path="/5D521711" Ref="ANT1"  Part="1" 
+AR Path="/5D2ABE03/5D521711" Ref="ANT1"  Part="1" 
 F 0 "ANT1" H 1350 1765 50  0000 C CNN
 F 1 "Johanson1575" H 1350 1674 50  0000 C CNN
 F 2 "ICSSPicoTracker2:Johanson1575" H 1400 1500 50  0001 C CNN

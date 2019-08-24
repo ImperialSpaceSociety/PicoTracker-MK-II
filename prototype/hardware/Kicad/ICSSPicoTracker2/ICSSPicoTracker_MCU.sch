@@ -216,7 +216,7 @@ F 3 "~" H 3650 5300 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	3650 1900 3850 1900
+	3650 1900 3800 1900
 Wire Wire Line
 	7600 950  7600 750 
 $Comp
@@ -428,12 +428,12 @@ Wire Wire Line
 $Comp
 L power:GND #PWR089
 U 1 1 5D6856C6
-P 5400 1600
-F 0 "#PWR089" H 5400 1350 50  0001 C CNN
-F 1 "GND" H 5405 1427 50  0000 C CNN
-F 2 "" H 5400 1600 50  0001 C CNN
-F 3 "" H 5400 1600 50  0001 C CNN
-	1    5400 1600
+P 5400 1650
+F 0 "#PWR089" H 5400 1400 50  0001 C CNN
+F 1 "GND" H 5405 1477 50  0000 C CNN
+F 2 "" H 5400 1650 50  0001 C CNN
+F 3 "" H 5400 1650 50  0001 C CNN
+	1    5400 1650
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -447,8 +447,6 @@ F 3 "~" H 5950 1250 50  0001 C CNN
 	1    5950 1250
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5400 1600 5400 1500
 Wire Wire Line
 	5950 1400 5950 1500
 Wire Wire Line
@@ -478,7 +476,7 @@ Wire Wire Line
 	6400 950  6650 950 
 Connection ~ 6650 950 
 Wire Wire Line
-	6200 950  5950 950 
+	6200 950  6100 950 
 Connection ~ 5950 950 
 Connection ~ 4550 950 
 Wire Wire Line
@@ -900,4 +898,34 @@ Text Label 7650 4300 2    50   ~ 0
 MCU_NSEL4
 Text Label 4550 4100 0    50   ~ 0
 MCU_MISO4
+$Comp
+L power:PWR_FLAG #FLG0101
+U 1 1 5D614102
+P 3800 1900
+F 0 "#FLG0101" H 3800 1975 50  0001 C CNN
+F 1 "PWR_FLAG" H 3800 2073 50  0000 C CNN
+F 2 "" H 3800 1900 50  0001 C CNN
+F 3 "~" H 3800 1900 50  0001 C CNN
+	1    3800 1900
+	1    0    0    -1  
+$EndComp
+Connection ~ 3800 1900
+Wire Wire Line
+	3800 1900 3850 1900
+$Comp
+L power:PWR_FLAG #FLG0102
+U 1 1 5D621597
+P 6100 950
+F 0 "#FLG0102" H 6100 1025 50  0001 C CNN
+F 1 "PWR_FLAG" H 6100 1123 50  0000 C CNN
+F 2 "" H 6100 950 50  0001 C CNN
+F 3 "~" H 6100 950 50  0001 C CNN
+	1    6100 950 
+	1    0    0    -1  
+$EndComp
+Connection ~ 6100 950 
+Wire Wire Line
+	6100 950  5950 950 
+Wire Wire Line
+	5400 1500 5400 1650
 $EndSCHEMATC

@@ -785,7 +785,7 @@ MCU_RXD0
 Text HLabel 4550 3100 0    50   Input ~ 0
 MCU_PA02
 $Comp
-L ICSSPicoTracker:W25Q16DW U2
+L ICSSPicoTracker2-rescue:W25Q16DW-ICSSPicoTracker-ICSSPicoTracker2-rescue U2
 U 1 1 5D77FBCE
 P 8100 3150
 F 0 "U2" H 8375 3875 50  0000 C CNN

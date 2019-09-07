@@ -15,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L ICSSPicoTracker2-rescue:W25Q16DW-ICSSPicoTracker-ICSSPicoTracker2-rescue U15
+L ICSSPicoTracker:W25Q16DW U15
 U 1 1 5D44A3B3
 P 8900 3750
 F 0 "U15" H 9175 4475 50  0000 C CNN
@@ -414,7 +414,7 @@ Wire Wire Line
 NoConn ~ 7250 4550
 NoConn ~ 7250 4850
 $Comp
-L ICSSPicoTracker2-rescue:M8030KT-ICSSPicoTracker-ICSSPicoTracker2-rescue U14
+L ICSSPicoTracker:M8030KT U14
 U 1 1 5D44842F
 P 5100 5800
 F 0 "U14" H 6125 9015 50  0000 C CNN
